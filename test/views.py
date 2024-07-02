@@ -39,3 +39,15 @@ def edit_test(request, pk):
     else:
         form = TestForm(instance=test)
     return render(request, 'test/edit_test.html', {'form': form})
+
+def my_tests(request):
+    #me = User.objects.get(username=)
+    test = Test#.objects.filter(author=me)
+    return render(request, 'test/my_tests.html', {'test': test})
+
+def passed_tests(request):
+    test = Test#.objects.filter(passed=True)
+    return render(request, 'test/passed_tests.html', {'test': test})
+
+def FAQ(request):
+    return render(request, 'test/FAQ.html', {})
