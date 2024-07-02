@@ -8,6 +8,7 @@ def test_list(request):
     tests = Test
     return render(request, 'test/test_list.html', {"tests": tests})
 
+
 def create_test(request):
     if request.method == "POST":
         form = TestForm(request.POST)
@@ -20,6 +21,21 @@ def create_test(request):
         form = TestForm()
     return render(request, 'test/create_test.html', {'form': form})
 
+
 def passing_the_test(request, pk):
     test = get_object_or_404(Test, pk=pk)
     return render(request, 'test/passing_the_test.html', {'test': test})
+
+
+def edit_test(request, pk):
+    test = get_object_or_404(Test, pk=pk)
+    if request.method == "POST":
+        form = TestForm(request.POST, instance=test)
+        if form.is_valid():
+            test = form.save(commit=False)
+            test.author = request.user
+            test.save()
+            return redirect('post_detail', pk=test.pk)
+    else:
+        form = TestForm(instance=test)
+    return render(request, 'test/edit_test.html', {'form': form})

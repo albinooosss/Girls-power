@@ -9,6 +9,9 @@
     <body>
         <div class="page-header">
             <h1><a href="/">QuizLab</a></h1>
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_test' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            {% endif %}<!--ссылка будет отправлена в браузер, только если запрашивающий страницу пользователь вошёл в систему-->
         </div>
 
         <div class="content container">
