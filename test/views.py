@@ -4,9 +4,9 @@ from .forms import TestForm
 from django.shortcuts import redirect
 
 
-def test_list(request):
+def main_page(request):
     tests = Test
-    return render(request, 'test/test_list.html', {"tests": tests})
+    return render(request, 'test/main_page.html', {"tests": tests})
 
 
 def create_test(request):
