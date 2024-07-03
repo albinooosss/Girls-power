@@ -1,5 +1,5 @@
 {% extends 'test/base.html' %}
-
+{% block title %}Create test{% endblock %}
 {% block content %}
     <h1>New test</h1>
     <form method="POST" class="post-form">{% csrf_token %}
