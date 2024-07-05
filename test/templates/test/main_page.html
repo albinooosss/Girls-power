@@ -1,13 +1,4 @@
 {% extends 'test/base.html' %}
 {% block title %}Main{% endblock %}
 {% block content %}
-    {% for post in posts %}
-        <div class="post">
-            <!---<div class="date">
-                {{ test.published_date }}
-            </div>-->
-            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ test.title }}</a></h1>
-            <!--<p>{{ post.text|linebreaksbr }}</p>-->
-        </div>
-    {% endfor %}
 {% endblock %}
