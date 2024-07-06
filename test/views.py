@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from .models import Test, Result, Answer, Question
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.shortcuts import redirect
 
 
@@ -144,24 +144,19 @@ def login(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            print("---------------------")
-            print(email)
-            print("---------------------")
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('main_page')
     else:
-        print("login")
         form = LoginForm()
-    return render(request, 'main_page.html', {'form': form})
+    return render(request, 'test/main_page.html', {'form': form})
 
 
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']

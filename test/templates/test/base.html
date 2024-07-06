@@ -51,12 +51,14 @@
                 <img src="{% static 'test/img/Logo.png' %}" alt="Иконка сайта" class="site-icon">
                 <h1><a href="/" class="site-title">QuizLab</a></h1>
             </div>
+            {% if user.is_authenticated %}
             <div class="col-4 col-md-6 d-flex justify-content-end align-items-center">
                 <div class="user-card d-flex align-items-center">
                     <img src="{% static 'path/to/profile/photo' %}" alt="Profile photo" class="profile-photo">
                     <span>{{ user.username }}</span>
                 </div>
             </div>
+            {% endif %}
         </div>
     </header>
 

@@ -10,7 +10,7 @@ urlpatterns = [
     path('test/FAQ', views.FAQ, name='FAQ'),
     # path('test/create_test/', views.create_test, name='create_test'),
     # path('test/<int:pk>/edit_test/', views.edit_test, name='edit_test'),
-    path('accounts/login/', views.login, name='login'),
-
+    path('account/login/', views.login, name='login'),
+    path('account/register/', views.register, name='register'),
 
 ]
