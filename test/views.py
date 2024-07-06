@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from .models import Test, Result, Answer, Question
 from .forms import LoginForm, RegisterForm
@@ -19,10 +20,10 @@ def my_tests(request):
     if not request.user.is_authenticated:
         return redirect('login')  # Перенаправляем на страницу входа, если пользователь не авторизован
     user = request.user  # Получаем текущего пользователя
-    tests = Test.objects.filter(author=user)  # Фильтруем тесты по автору
+    tests = Test.objects.filter(author_id=user)  # Фильтруем тесты по автору
     category_id = request.GET.get('category_id')
     if category_id and category_id.isdigit():
-        tests = tests.filter(category_id=int(category_id))
+        tests = tests.filter(category_id_id=int(category_id))
     return render(request, 'test/my_tests.html', {'tests': tests})
 
 
@@ -37,10 +38,17 @@ def passed_tests(request):
     return render(request, 'test/passed_tests.html', {'tests': tests})
 
 
+# def passing_the_test(request, id):
+#     if request.user.is_authenticated:
+#         test = get_object_or_404(Test, id=id)
+#         return render(request, 'test/passing_the_test.html', {'test': test})
+#     else:
+#         return redirect('login')
+
+@login_required
 def passing_the_test(request, id):
     test = get_object_or_404(Test, id=id)
     return render(request, 'test/passing_the_test.html', {'test': test})
-
 
 def FAQ(request):
     return render(request, 'test/FAQ.html')
@@ -137,20 +145,27 @@ def FAQ(request):
 #     return render(request, 'test/edit_test.html', context)
 
 
-def login(request):
-    if request.method == 'POST':
-        print("login")
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('main_page')
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('main_page')
     else:
-        form = LoginForm()
-    return render(request, 'test/main_page.html', {'form': form})
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(username=username, password=password)
+                print(user)
+                if user is not None :
+                    print("login")
+                    login(request, user)
+
+                    # return redirect('main_page')
+                else:
+                    form.add_error(None, 'Неверный логин или пароль')
+        else:
+            form = LoginForm()
+        return render(request, 'registration/login.html', {'form': form})
 
 
 def register(request):

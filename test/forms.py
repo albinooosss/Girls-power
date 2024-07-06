@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from .models import Test, Question, Answer, Result
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='email', max_length=100, required=True)
+    email = None
+    username = forms.CharField(label='username', max_length=100, required=True)
     password = forms.CharField(label='password', strip=True, widget=forms.PasswordInput, required=True)
 
 
