@@ -1,113 +1,69 @@
 {% extends 'test/base.html' %}
-{% block title %}Create test{% endblock %}
-{% block add_styles %}
-    .container {
-        max-width: 600px; /* Максимальная ширина контейнера */
-        background-color: #ffffff; /* Белый фон формы */
-        padding: 20px; /* Внутренние отступы */
-        border-radius: 10px; /* Сглаженные углы */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Легкая тень */
-        margin-top: 20px; /* Отступ сверху */
-        margin-bottom: 20px; /* Отступ снизу */
-    }
+{% block title %}Создать тест{% endblock %}
 
-    h1 {
-        margin-bottom: 20px; /* Отступ снизу */
-        font-size: 2rem; /* Размер шрифта */
-        color: #343a40; /* Цвет текста */
-    }
-
-    .form-label {
-        font-weight: bold; /* Жирный шрифт для меток */
-        color: #495057; /* Цвет меток */
-    }
-
-    .form-control, .form-select {
-        border: 1px solid #ced4da; /* Цвет бордюра */
-        border-radius: 5px; /* Сглаженные углы */
-    }
-
-    .form-control:focus, .form-select:focus {
-        border-color: #80bdff; /* Цвет бордюра при фокусе */
-        box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Тень при фокусе */
-    }
-
-    .btn-primary {
-        background-color: #007bff; /* Основной цвет кнопки */
-        border: none; /* Убираем бордюр */
-        border-radius: 5px; /* Сглаженные углы */
-        padding: 10px; /* Внутренние отступы */
-        font-size: 1.2rem; /* Размер шрифта */
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3; /* Цвет кнопки при наведении */
-    }
-
-    @media (max-width: 576px) {
-        .container {
-            padding: 15px; /* Уменьшаем отступы на маленьких экранах */
-        }
-
-        h1 {
-            font-size: 1.5rem; /* Уменьшаем размер шрифта на маленьких экранах */
-        }
-
-        .btn-primary {
-            font-size: 1rem; /* Уменьшаем размер шрифта кнопки на маленьких экранах */
-        }
-    }
-{% endblock %}
 {% block content %}
-    <div class="container mt-5">
-        <div id="testCreationCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <!-- Form for Test Name, Time, Category -->
-                    <form id="testInfoForm" class="carousel-form" method="POST">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="testName" class="form-label">Test Name</label>
-                            <input id="testName" name="name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="testTime" class="form-label">Time for Pass (max 60 minutes)</label>
-                            <input id="testTime" name="time_for_pass" class="form-control" type="number" min="1" max="60" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="testCategory" class="form-label">Category</label>
-                            <select id="testCategory" name="category" class="form-select" required>
-                                <option value="Education">Education</option>
-                                <option value="Science and technology">Science and technology</option>
-                                <!-- Add other options dynamically or manually -->
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary next-carousel">Next</button>
-                    </form>
-                </div>
-                <div class="carousel-item">
-                    <!-- Form for Questions and Answers -->
-                    <form id="questionsAnswersForm" class="carousel-form" method="POST">
-                        <div id="questionsContainer">
-                            <!-- Questions will be dynamically added here -->
-                        </div>
-                        <button type="button" id="addQuestionButton" class="btn btn-primary">Add Question</button>
-                        <button type="button" class="btn btn-secondary prev-carousel">Previous</button>
-                        <button type="submit" class="btn btn-primary">Save Test</button>
-                    </form>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#testCreationCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#testCreationCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+<div class="container mt-5">
+    <h2 class="mb-4">Создать тест</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ test_form.as_p }}
         </div>
-    </div>
-    <!-- Bootstrap JS and your custom JS file -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/create_test.js' %}"></script>
+        <div id="questions">
+        </div>
+        <button type="button" class="btn btn-secondary mt-3 add-question">Добавить вопрос</button>
+        <button type="submit" class="btn btn-primary mt-3">Создать тест</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const maxQuestions = 50;
+        const maxAnswers = 6;
+
+        function addAnswer(questionDiv) {
+            const questionIndex = questionDiv.data('index');
+            const answerCount = questionDiv.find('.answer').length;
+            if (answerCount < maxAnswers) {
+                const answerIndex = answerCount + 1;
+                const newAnswer = `
+                    <div class="form-group answer">
+                        <input type="text" name="question_${questionIndex}_answer_${answerIndex}_name" class="form-control" placeholder="Текст ответа">
+                        <input type="checkbox" name="question_${questionIndex}_answer_${answerIndex}_is_correct" class="form-check-input">
+                        <label class="form-check-label">Верный</label>
+                    </div>`;
+                questionDiv.find('.answers').append(newAnswer);
+            } else {
+                alert('Можно добавить до 6 ответов.');
+            }
+        }
+
+        function addQuestion() {
+            const questionCount = $('#questions .question').length;
+            if (questionCount < maxQuestions) {
+                const questionIndex = questionCount + 1;
+                const newQuestion = `
+                    <div class="question form-group" data-index="${questionIndex}">
+                        <input type="text" name="question_${questionIndex}_name" class="form-control" placeholder="Текст вопроса">
+                        <h3>Ответы</h3>
+                        <div class="answers"></div>
+                        <button type="button" class="btn btn-secondary add-answer">Добавить ответ</button>
+                    </div>`;
+                $('#questions').append(newQuestion);
+            } else {
+                alert('Можно добавить до 50 вопросов.');
+            }
+        }
+
+        $(document).on('click', '.add-answer', function () {
+            const questionDiv = $(this).closest('.question');
+            addAnswer(questionDiv);
+        });
+
+        $('.add-question').click(function () {
+            addQuestion();
+        });
+    });
+</script>
 {% endblock %}

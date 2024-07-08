@@ -41,6 +41,14 @@
         .dropdown-item:hover {
             background-color: #e9ecef;
         }
+        .site-title a {
+            color: inherit; /* Сохраняет цвет текста */
+            text-decoration: none; /* Убирает подчеркивание */
+        }
+        .site-title a:hover {
+            color: inherit; /* Сохраняет цвет текста при наведении */
+            text-decoration: none; /* Убирает подчеркивание при наведении */
+        }
         {% block add_styles %}{% endblock %}
     </style>
 </head>
@@ -49,19 +57,18 @@
         <div class="row align-items-center">
             <div class="col-8 col-md-6 d-flex align-items-center">
                 <img src="{% static 'test/img/Logo.png' %}" alt="Иконка сайта" class="site-icon">
-                <h1><a href="/" class="site-title">QuizLab</a></h1>
+                <h1 class="site-title"><a href="/">QuizLab</a></h1>
             </div>
             {% if user.is_authenticated %}
             <div class="col-4 col-md-6 d-flex justify-content-end align-items-center">
                 <div class="user-card d-flex align-items-center">
                     <img src="{% static 'path/to/profile/photo' %}" alt="Profile photo" class="profile-photo">
                     <span>{{ user.username }}</span>
+                    <a class="nav-link" href="/account/logout/">Выйти</a>
                 </div>
             </div>
-            {% endif %}
         </div>
     </header>
-
     <nav id="navbar-example2" class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">{% block page_name %}{% endblock %}</a>
@@ -89,6 +96,9 @@
                             <a class="dropdown-item" href="#">Другое</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_test' %}">Создать тест</a>
+                    </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
@@ -97,7 +107,7 @@
             </div>
         </div>
     </nav>
-
+{% endif %}
     <div class="container">
         {% block content %}
         {% endblock %}

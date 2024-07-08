@@ -1,0 +1,7 @@
+{% extends 'test/base.html' %}
+{% block content %}
+    <h5 class="text-200 fs--1">Результаты пользователя {{ request.user.username }}</h5>
+    <h5 class="text-400">{{ test }}</h5>
+    <h5 class="text-400">Правильные ответы</h5>
+    <h5 class="text-400">{{ correct }}</h5>
+{% endblock %}

@@ -1,6 +1,8 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
-from .models import Test, Question, Answer, Result
+from .models import Test, Question, Answer, Result, Category
+
 
 class LoginForm(forms.Form):
     email = None
@@ -9,12 +11,15 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
+    username = forms.CharField(label='username', max_length=100, required=True)
+    help_text = ""
     password = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
     confirm_password = forms.CharField(label='Confirm Password', widget=forms.PasswordInput, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'confirm_password']  # Включаем confirm_password
+        fields = ['username', 'email', 'password', 'confirm_password']# Включаем confirm_password
+
 
     def clean(self):
         cleaned_data = super().clean()
@@ -33,16 +38,18 @@ class RegisterForm(forms.ModelForm):
             user.save()
         return user
 
-# class TestForm(forms.ModelForm):
-#     class Meta:
-#         model = Test
-#         fields = ['id', 'name', 'time_for_pass', 'category']
-#         widgets = {
-#             'id': forms.HiddenInput(),  # Скрытое поле для хранения идентификатора теста
-#             'name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'time_for_pass': forms.NumberInput(attrs={'class': 'form-control'}),
-#             'category': forms.TextInput(attrs={'class': 'form-control'}),
-#         }
+
+
+class TestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = ['name', 'time_for_pass', 'category']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'time_for_pass': forms.NumberInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
+        category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 
