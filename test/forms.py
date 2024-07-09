@@ -1,4 +1,5 @@
 import re
+
 from django import forms
 from django.contrib.auth.models import User
 from .models import Test, Question, Answer, Result, Category
@@ -46,11 +47,14 @@ class TestForm(forms.ModelForm):
         fields = ['name', 'time_for_pass', 'category']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'time_for_pass': forms.NumberInput(attrs={'class': 'form-control'}),
+            'time_for_pass': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 1,  # минимальное значение
+                'max': 60  # максимальное значение
+            }),
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
         category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
-
 
 
 # class QuestionForm(forms.ModelForm):

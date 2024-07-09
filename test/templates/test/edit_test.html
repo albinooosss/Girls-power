@@ -1,5 +1,7 @@
 {% extends 'test/base.html' %}
+{% load static %}
 {% block title %}Edit Test{% endblock %}
+
 
 {% block add_styles %}
 <!-- Include your custom CSS if needed -->
@@ -7,7 +9,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Edit Test</h1>
+    <h2 class="mb-4">Edit Test</h2>
     <form id="editTestForm" method="POST">
         {% csrf_token %}
         {{ test_form.as_p }}
@@ -15,21 +17,26 @@
         <!-- Hidden field to pass question_forms length to JavaScript -->
         <input type="hidden" id="questionFormsLength" value="{{ question_forms|length }}">
 
-        <!-- Question and Answer fields -->
-        {% for question_form in question_forms %}
-        <div class="mb-3">
-            {{ question_form.as_p }}
-            {% for answer_form in answer_forms[question_form.instance.id] %}
-            {{ answer_form.as_p }}
+        {% for question in test.question_set.all %}
+            <h3>{{ question.name }}</h3>
+            <input type="text" name="question_{{ question.id }}_name" value="{{ question.name }}">
+            <br>
+            {% for answer in question.answer_set.all %}
+                <input type="text" name="question_{{ question.id }}_answer_{{ answer.id }}_name" value="{{ answer.name }}">
+                <input type="checkbox" name="question_{{ question.id }}_answer_{{ answer.id }}_is_correct" {% if answer.correct %}checked{% endif %}>
+                Correct
+                <br>
             {% endfor %}
-        </div>
         {% endfor %}
+
+        <input type="submit" value="Save">
 
         <button type="button" id="addQuestionButton" class="btn btn-primary">Add Question</button>
         <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a href="{% url 'test_list' %}" class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'main_page' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+
 
 <!-- Bootstrap JS and your custom JS file -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

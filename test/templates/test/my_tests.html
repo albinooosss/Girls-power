@@ -1,5 +1,7 @@
 {% extends 'test/base.html' %}
+
 {% block title %}My tests{% endblock %}
+
 {% block content %}
 <div class="container">
     <h1>My Tests</h1>
@@ -10,8 +12,16 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ test.name }}</h5>
                     <p class="card-text">Category: {{ test.category }}</p>
-                    <p class="card-text">Author: {{ test.author_id.username }}</p>
-                    <a href="{% url passing_the_test test.id %}" class="btn btn-primary">Take Test</a>
+                    <p class="card-text">
+                        Author:
+                        {% for user in users %}
+                            {% if user.id == test.author_id %}
+                                {{ user.username }}
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><a href="{% url 'passing_the_test' test.id %}" class="btn btn-primary">Take Test</a></p>
+                    <p><a href="{% url 'edit_test' test.id %}" class="btn btn-primary">Edit Test</a></p>
                 </div>
             </div>
         </div>
