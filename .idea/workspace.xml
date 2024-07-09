@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="03818b39-2977-457d-ace0-b0ba384888dc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/test/templates/registration/logout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/templates/test/display.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/templates/test/partial.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/templates/test/results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/QuizLab.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QuizLabvenv/Lib/site-packages/django/contrib/auth/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuizLabvenv/Lib/site-packages/django/contrib/auth/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oursite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/oursite/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/registration/logged_out.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/registration/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/test/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/test/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/test/create_test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/test/create_test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/test/my_tests.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/test/my_tests.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/test/passing_the_test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/test/passing_the_test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/templates/test/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/test/templates/test/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/views.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2ixfO1B4xP0PWtgoBNx3H5bFHzk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Adelina2",
+    "last_opened_file_path": "/Users/albinashaykhullina/Downloads/Girls-power_2",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-975db3bf15a3-31b6be0877a2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.18034.82" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03818b39-2977-457d-ace0-b0ba384888dc" name="Changes" comment="" />
+      <created>1720437113623</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720437113623</updated>
+    </task>
+    <servers />
+  </component>
+</project>
