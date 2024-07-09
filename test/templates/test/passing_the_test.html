@@ -1,10 +1,23 @@
 {% extends 'test/base.html' %}
-{% block title %}Passing the test{% endblock %}
 {% block content %}
-    <div class="post">
-        {% if user.is_authenticated %}
-            <a class="btn btn-default" href="{% url 'create_test' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-        {% endif %}
-        <h1>{{ test.title }}</h1>
-    </div>
+    <h1>{{ test.name }}</h1>
+    <form method="post" action="/test/{{test.id}}/results/">
+        {% csrf_token %}
+        {% for question in questions %}
+            <h2>{{ question.name }}</h2>
+            {% for answer in question.answer_set.all %}
+                <div class="form-check">
+                    <input type="checkbox"
+                           name="answer_{{ question.id }}"
+                           class="form-check-input"
+                           id="answer{{ answer.id }}"
+                           value="{{ answer.id }}"
+                           {% if answer in user_answers %}checked{% endif %}>
+                    <label for="answer{{ answer.id }}" class="form-check-label">{{ answer.name }}</label>
+                </div>
+            {% endfor %}
+            <br>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Проверить</button>
+    </form>
 {% endblock %}

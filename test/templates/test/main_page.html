@@ -1,13 +1,30 @@
 {% extends 'test/base.html' %}
+
 {% block title %}Main{% endblock %}
+
 {% block content %}
-    {% for post in posts %}
-        <div class="post">
-            <!---<div class="date">
-                {{ test.published_date }}
-            </div>-->
-            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ test.title }}</a></h1>
-            <!--<p>{{ post.text|linebreaksbr }}</p>-->
+<div class="container">
+    <h1>All Tests</h1>
+    <div class="row">
+        {% for test in tests %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ test.name }}</h5>
+                    <p class="card-text">Category: {{ test.category }}</p>
+                    <p class="card-text">
+                        Author:
+                        {% for user in users %}
+                            {% if user.id == test.author_id %}
+                                {{ user.username }}
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <a href="{% url 'passing_the_test' test.id %}" class="btn btn-primary">Take Test</a>
+                </div>
+            </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
