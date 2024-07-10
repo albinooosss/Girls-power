@@ -323,7 +323,7 @@ def test_results(request, test_id):
     for question in questions:
         selected_answer = request.POST.get(f'answer_{question.id}')
         print(selected_answer)
-        Choice.objects.create(user=user, question=question, answer_id=selected_answer)
+        # Choice.objects.create(user=user, question=question, answer_id=selected_answer)
         user_choices = Choice.objects.filter(user=user, question=question, answer=Answer.objects.get(id=selected_answer))
         if selected_answer:
             user_answers_arr.append(int(selected_answer))
@@ -336,6 +336,8 @@ def test_results(request, test_id):
     percentage_correct = 0
     if total_questions > 0:
         percentage_correct = (correct_answers / total_questions) * 100
+
+    Choice.objects.create(user=user, question=question, answer_id=selected_answer, percentage_correct=percentage_correct)
 
     context = {
         'test': test,
