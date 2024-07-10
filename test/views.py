@@ -303,7 +303,7 @@ def grade_question(request, test_id):
             user_answers.append(int(selected_answer))
 
     # Обновляем результаты
-    result.choice_set.set(user_answers)
+    result.progress.set(user_answers)
     result.save()
 
     # Перенаправляем на страницу результатов
@@ -314,16 +314,23 @@ def grade_question(request, test_id):
 def test_results(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     questions = test.question_set.all()
+    print(questions)
     user = request.user
 
     total_questions = questions.count()
     correct_answers = 0
+    user_answers_arr = []
     for question in questions:
-        user_choices = Choice.objects.filter(user=user, question=question)
+        selected_answer = request.POST.get(f'answer_{question.id}')
+        print(selected_answer)
+        Choice.objects.create(user=user, question=question, answer_id=selected_answer)
+        user_choices = Choice.objects.filter(user=user, question=question, answer=Answer.objects.get(id=selected_answer))
+        if selected_answer:
+            user_answers_arr.append(int(selected_answer))
         if user_choices.exists():
             print(user_choices)
             user_answer = user_choices.first().answer
-            if user_answer.correct:  # Предположим, что у вас есть поле is_correct в модели Answer, указывающее на правильный ответ
+            if user_answer.correct:
                 correct_answers += 1
 
     percentage_correct = 0
