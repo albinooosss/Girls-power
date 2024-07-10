@@ -1,9 +1,92 @@
 {% extends 'test/base.html' %}
-{% block title %}Сreate a test{% endblock %}
+
+{% block title %}Create a Test{% endblock %}
+
+{% block add_styles %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+    }
+
+    .container {
+        background-color: white;
+        border-radius: 2vw;
+        box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+        padding: 3vw;
+        max-width: 90%;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        text-align: left;
+        margin: 2vw 0;
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    .btn {
+        margin-top: 2vw;
+    }
+
+    .answer {
+        display: flex;
+        align-items: center;
+        margin: 1vw 0;
+    }
+
+    input[type="text"],
+    .form-check-input {
+        width: 100%;
+        padding: 1vw;
+        border: 0.1vw solid #ccc;
+        border-radius: 0.5vw;
+        margin-top: 1vw;
+    }
+
+    .form-check-label {
+        margin-left: 1vw;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 5vw;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .form-group {
+            padding: 2vw 0;
+        }
+
+        input[type="text"],
+        .form-check-input {
+            padding: 1.5vw;
+        }
+
+        .btn {
+            margin-top: 1vw;
+        }
+
+        .answer {
+            margin: 0.5vw 0;
+        }
+
+        .form-check-label {
+            margin-left: 0.5vw;
+        }
+    }
+
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Сreate a test</h2>
+    <h2 class="mb-4">Create a Test</h2>
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -11,8 +94,8 @@
         </div>
         <div id="questions">
         </div>
-        <button type="button" class="btn btn-secondary mt-3 add-question">Add a question</button>
-        <button type="submit" class="btn btn-primary mt-3">Сreate a test</button>
+        <button type="button" class="btn btn-secondary mt-3 add-question">Add a Question</button>
+        <button type="submit" class="btn btn-primary mt-3">Create a Test</button>
     </form>
 </div>
 
@@ -60,7 +143,6 @@
             const questionDiv = $(this).closest('.question');
             addAnswer(questionDiv);
         });
-
         $('.add-question').click(function () {
             addQuestion();
         });
