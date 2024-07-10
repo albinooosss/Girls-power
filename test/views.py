@@ -247,13 +247,8 @@ def passing_the_test(request, id):
     test = get_object_or_404(Test, id=id)
     questions = test.question_set.all()
 
-    # Проверяем, есть ли уже результат для этого пользователя и теста
-    try:
-        result = Result.objects.get(user=request.user, test=test)
-        user_answers = result.choice_set.all()
-    except Result.DoesNotExist:
-        result = None
-        user_answers = []
+    result = None
+    user_answers = []
 
     if request.method == 'POST':
         # Обработка данных формы
