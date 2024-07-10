@@ -20,4 +20,5 @@ urlpatterns = [
     path('test/<int:id>/passing_the_test/', views.passing_the_test, name='passing_the_test'),
     path('search-tests/', views.TestSearchView.as_view(), name='search_tests'),
     path('category/<int:id>/', views.categories_views, name='category'),
+    path('delete_question/<int:question_id>/', views.delete_question, name='delete_question'),
 ]
