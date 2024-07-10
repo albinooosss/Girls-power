@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
@@ -142,6 +143,13 @@ def register(request):
         return render(request, 'test/register.html', {'form': form})
 
 @login_required
+def delete_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    question.delete()
+    return JsonResponse({'status': 'success'})
+
+
+@login_required
 def create_test(request):
     if request.method == 'POST':
         test_form = TestForm(request.POST)
@@ -179,18 +187,23 @@ def edit_test(request, id):
     test = get_object_or_404(Test, id=id)
 
     if request.method == 'POST':
+        if 'delete_test' in request.POST:
+            test.delete()
+            return redirect('/test/my_tests/')
+
         test_form = TestForm(request.POST, instance=test)
         if test_form.is_valid():
             test = test_form.save(commit=False)
             test.author = request.user
             test.save()
 
-            # Обновляем вопросы и ответы
+            # Обновляем существующие вопросы и ответы
             for question in test.question_set.all():
                 question_name = request.POST.get(f'question_{question.id}_name')
                 if question_name:
                     question.name = question_name
                     question.save()
+
                     for answer in question.answer_set.all():
                         answer_name = request.POST.get(f'question_{question.id}_answer_{answer.id}_name')
                         if answer_name:
@@ -199,12 +212,34 @@ def edit_test(request, id):
                             answer.save()
                         else:
                             answer.delete()
+                else:
+                    question.delete()
+
+            # Добавляем новые вопросы и ответы
+            for i in range(1, 51):  # Максимум 50 вопросов
+                if not any(f'question_{question.id}_name' == f'question_{i}_name' for question in test.question_set.all()):
+                    question_name = request.POST.get(f'question_{i}_name')
+                    if question_name:
+                        question = Question.objects.create(
+                            name=question_name,
+                            test=test
+                        )
+                        for j in range(1, 7):  # Максимум 6 ответов на вопрос
+                            answer_name = request.POST.get(f'question_{i}_answer_{j}_name')
+                            if answer_name:
+                                Answer.objects.create(
+                                    name=answer_name,
+                                    correct=request.POST.get(f'question_{i}_answer_{j}_is_correct') == 'on',
+                                    question=question
+                                )
 
             return redirect('/test/my_tests/')
     else:
         test_form = TestForm(instance=test)
 
     return render(request, 'test/edit_test.html', {'test_form': test_form, 'test': test})
+
+
 
 
 @login_required
