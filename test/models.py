@@ -71,4 +71,5 @@ class Choice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    percentage_correct = models.IntegerField(default=-1)
 
