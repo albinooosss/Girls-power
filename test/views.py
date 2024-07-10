@@ -337,7 +337,8 @@ def test_results(request, test_id):
     if total_questions > 0:
         percentage_correct = (correct_answers / total_questions) * 100
 
-    Choice.objects.create(user=user, question=question, answer_id=selected_answer, percentage_correct=percentage_correct)
+    Choice.objects.create(user=user, question=question, answer_id=selected_answer)
+    Result.objects.create(user=user, progress=percentage_correct, test=test)
 
     context = {
         'test': test,
