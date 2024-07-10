@@ -48,12 +48,6 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
 
-class Result(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    progress = models.IntegerField(default=-1)
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-
-
 class Answer(models.Model):
     name = models.CharField(max_length=100)
     correct = models.BooleanField(default=False)
@@ -65,6 +59,17 @@ class Answer(models.Model):
     class Meta:
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'
+
+
+
+class Result(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    progress = models.IntegerField(default=-1)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    choice_set = models.ManyToManyField(Answer, blank=True)
+
+
+
 
 
 class Choice(models.Model):
