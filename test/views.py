@@ -68,28 +68,32 @@ def my_tests(request):
 def passed_tests(request):
     category_id = request.GET.get('category_id')
     categories = Category.objects.all()
+    user = request.user
     if not category_id or not category_id.isdigit():
         tests = Test.objects.all()
-        completed_tests = {test.id: Result.objects.filter(user=request.user, test=test, progress=100.0).exists() for
-                           test in
-                           tests}
     else:
         tests = Test.objects.filter(category_id=int(category_id))
-        completed_tests = {test.id: Result.objects.filter(user=request.user, test=test, progress=100.0).exists() for
-                           test in
-                           tests}
-    user = request.user  # Получаем текущего пользователя
-    tests = tests.filter(author_id=user)  # Фильтруем тесты по автору
-    # Получаем ID авторов тестов
+
+    results = Result.objects.filter(user=user)
+    test_results_dict = {}  # Словарь для хранения результатов тестов
+    for result in results:
+        test = result.test
+        progress = result.progress
+
+        if test in tests:  # Проверяем, что тест принадлежит выбранной категории
+            if test not in test_results_dict:
+                test_results_dict[test] = progress
+
     authors_ids = tests.values_list('author_id', flat=True)
     # Получаем объекты авторов
     users = User.objects.filter(id__in=authors_ids)
     context = {
-        "completed_tests": completed_tests,
+        "test_results_dict": test_results_dict,
         "categories": categories,
         "users": users,
     }
-    return render(request, 'test/my_tests.html', context)
+    return render(request, 'test/passed_tests.html', context)
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -107,7 +111,8 @@ def login_view(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect(request.GET['next'] if 'next' in request.GET else 'main_page')
+                    next_url = request.GET.get('next', 'main_page')
+                    return redirect(next_url)
                 else:
                     form.add_error(None, 'Неверный логин или пароль')
                     return redirect('login')
@@ -208,7 +213,7 @@ def edit_test(request, id):
                         answer_name = request.POST.get(f'question_{question.id}_answer_{answer.id}_name')
                         if answer_name:
                             answer.name = answer_name
-                            answer.correct = request.POST.get(f'question_{question.id}_answer_{answer.id}_is_correct') == 'on'
+                            answer.correct = request.POST.get('question_{question.id}_answer_{answer.id}_is_correct') == 'on'
                             answer.save()
                         else:
                             answer.delete()
@@ -249,6 +254,7 @@ def passing_the_test(request, id):
 
     result = None
     user_answers = []
+
 
     if request.method == 'POST':
         # Обработка данных формы
@@ -309,35 +315,29 @@ def grade_question(request, test_id):
 def test_results(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     questions = test.question_set.all()
-    print(questions)
     user = request.user
 
     total_questions = questions.count()
-    correct_answers = 0
-    user_answers_arr = []
+    correct_answers_by_user = 0
     for question in questions:
+        correct_answer = question.answer_set.get(correct=True)
         selected_answer = request.POST.get(f'answer_{question.id}')
-        print(selected_answer)
-        # Choice.objects.create(user=user, question=question, answer_id=selected_answer)
-        user_choices = Choice.objects.filter(user=user, question=question, answer=Answer.objects.get(id=selected_answer))
+        #user_choices = Choice.objects.filter(user=user, question=question, answer=Answer.objects.get(id=selected_answer))
+        user_choices = Choice.objects.filter(user=user, question=question, answer=selected_answer)
         if selected_answer:
-            user_answers_arr.append(int(selected_answer))
-        if user_choices.exists():
-            print(user_choices)
-            user_answer = user_choices.first().answer
-            if user_answer.correct:
-                correct_answers += 1
+            if int(selected_answer)==correct_answer.id:
+                correct_answers_by_user += 1
 
     percentage_correct = 0
     if total_questions > 0:
-        percentage_correct = (correct_answers / total_questions) * 100
+        percentage_correct = (correct_answers_by_user / total_questions) * 100
 
-    Choice.objects.create(user=user, question=question, answer_id=selected_answer)
+    if selected_answer:
+        Choice.objects.create(user=user, question=question, answer_id=selected_answer)
     Result.objects.create(user=user, progress=percentage_correct, test=test)
-
     context = {
         'test': test,
-        'correct_answers': correct_answers,
+        'correct_answers_by_user': correct_answers_by_user,
         'total_questions': total_questions,
         'percentage_correct': percentage_correct
     }
