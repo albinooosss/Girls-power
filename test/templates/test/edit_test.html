@@ -25,7 +25,7 @@
                     {% for answer in question.answer_set.all %}
                         <div class="form-check">
                             <input type="text" id="question_{{ question.id }}_answer_{{ answer.id }}_name" class="form-control" name="question_{{ question.id }}_answer_{{ answer.id }}_name" value="{{ answer.name }}">
-                            <input type="checkbox" id="question_{{ question.id }}_answer_{{ answer.id }}_is_correct" class="form-check-input" name="question_{{ question.id }}_is_correct" {% if answer.correct %}checked{% endif %}>
+                            <input type="checkbox" id="question_{{ question.id }}_answer_{{ answer.id }}_is_correct" class="form-check-input" name="question_{{ question.id }}_answer_{{ answer.id }}_is_correct" {% if answer.correct %}checked{% endif %}>
                             <label class="form-check-label" for="question_{{ question.id }}_answer_{{ answer.id }}_is_correct">Correct</label>
                         </div>
                     {% endfor %}
@@ -90,19 +90,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ id: questionId })
-            }).then(response => {
-                if (response.ok) {
-                    const questionBlock = this.closest('.question-block');
-                    questionBlock.remove();
-                } else {
-                    alert('Failed to delete question.');
-                }
-            });
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      const questionBlock = this.closest('.question-block');
+                      questionBlock.remove();
+                  } else {
+                      alert('Failed to delete question.');
+                  }
+              }).catch(error => {
+                  console.error('Error:', error);
+                  alert('Failed to delete question.');
+              });
         });
     });
 });
 </script>
 {% endblock %}
+
+
 
 
 

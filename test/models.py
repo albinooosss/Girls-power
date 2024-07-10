@@ -66,7 +66,6 @@ class Result(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     progress = models.IntegerField(default=-1)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    choice_set = models.ManyToManyField(Answer, blank=True)
 
 
 
