@@ -1,9 +1,9 @@
 {% extends 'test/base.html' %}
-{% block title %}Создать тест{% endblock %}
+{% block title %}Сreate a test{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Создать тест</h2>
+    <h2 class="mb-4">Сreate a test</h2>
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -11,8 +11,8 @@
         </div>
         <div id="questions">
         </div>
-        <button type="button" class="btn btn-secondary mt-3 add-question">Добавить вопрос</button>
-        <button type="submit" class="btn btn-primary mt-3">Создать тест</button>
+        <button type="button" class="btn btn-secondary mt-3 add-question">Add a question</button>
+        <button type="submit" class="btn btn-primary mt-3">Сreate a test</button>
     </form>
 </div>
 
@@ -29,13 +29,13 @@
                 const answerIndex = answerCount + 1;
                 const newAnswer = `
                     <div class="form-group answer">
-                        <input type="text" name="question_${questionIndex}_answer_${answerIndex}_name" class="form-control" placeholder="Текст ответа">
+                        <input type="text" name="question_${questionIndex}_answer_${answerIndex}_name" class="form-control" placeholder="Reply text">
                         <input type="checkbox" name="question_${questionIndex}_answer_${answerIndex}_is_correct" class="form-check-input">
-                        <label class="form-check-label">Верный</label>
+                        <label class="form-check-label">True</label>
                     </div>`;
                 questionDiv.find('.answers').append(newAnswer);
             } else {
-                alert('Можно добавить до 6 ответов.');
+                alert('You can add up to 6 responses');
             }
         }
 
@@ -45,14 +45,14 @@
                 const questionIndex = questionCount + 1;
                 const newQuestion = `
                     <div class="question form-group" data-index="${questionIndex}">
-                        <input type="text" name="question_${questionIndex}_name" class="form-control" placeholder="Текст вопроса">
-                        <h3>Ответы</h3>
+                        <input type="text" name="question_${questionIndex}_name" class="form-control" placeholder="Question text">
+                        <h3>Answers</h3>
                         <div class="answers"></div>
-                        <button type="button" class="btn btn-secondary add-answer">Добавить ответ</button>
+                        <button type="button" class="btn btn-secondary add-answer">Add an answer</button>
                     </div>`;
                 $('#questions').append(newQuestion);
             } else {
-                alert('Можно добавить до 50 вопросов.');
+                alert('You can add up to 50 responses.');
             }
         }
 
