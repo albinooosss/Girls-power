@@ -1,6 +1,6 @@
 {% extends 'test/base.html' %}
 
-{% block title %}Вход{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block add_styles %}
 <style>
@@ -28,9 +28,9 @@
         <form action="/account/login/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" class="btn btn-primary w-100" value="Войти">
+            <input type="submit" class="btn btn-primary w-100" value="Login">
         </form>
-        <a class="nav-link text-center mt-3" href="{% url 'register' %}">Не зарегистрирован? Зарегистрируйся</a>
+        <a class="nav-link text-center mt-3" href="{% url 'register' %}">Not registered? Sign up</a>
     </div>
 </div>
 {% endblock %}
