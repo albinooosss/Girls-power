@@ -1,5 +1,26 @@
 {% extends 'test/base.html' %}
 {% block title %}Passing tests{% endblock %}
+
+{% block add_styles %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+    }
+    .container {
+        background-color: white;
+        border-radius: 2vw;
+        box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+        padding: 3vw;
+        max-width: 90%;
+        width: 90%;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}
 {% block content %}
     <h1>{{ test.name }}</h1>
     <p id="countdown">Time left: {{ time_for_pass }}</p>
