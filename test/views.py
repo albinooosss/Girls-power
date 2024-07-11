@@ -261,32 +261,34 @@ def edit_test(request, id):
 def passing_the_test(request, id):
     test = get_object_or_404(Test, id=id)
     questions = test.question_set.all()
-    time_for_pass = test.time_for_pass
+
     result = None
     user_answers = []
 
+
     if request.method == 'POST':
+        # Обработка данных формы
         user_answers = []
-        for question in questions:
+        for question in test.question_set.all():
             selected_answer = request.POST.get(f'answer_{question.id}')
             if selected_answer:
                 user_answers.append(int(selected_answer))
 
+        # Обновляем результаты
         if result:
             result.choice_set.set(user_answers)
             result.save()
         else:
-            result = Result.objects.create(user=request.user, test=test)
-            result.choice_set.set(user_answers)
+            result = Result.objects.create(user=request.user, test=test, choice_set=user_answers)
 
-        return redirect('test_results', test_id=test.id)  # Перенаправляем на страницу результатов
+        # Перенаправляем на страницу результатов
+        return redirect('/test/<int:test_id>/results/', test_id=test.id)
 
     context = {
         'test': test,
         'questions': questions,
         'user_answers': user_answers,
-        'result': result,
-        'time_for_pass': time_for_pass
+        'result': result
     }
     return render(request, 'test/passing_the_test.html', context)
 
