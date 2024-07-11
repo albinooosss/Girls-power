@@ -6,9 +6,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
+from django.views.decorators.http import require_POST
+
 from .models import Test, Result, Answer, Question, Category, Choice
 from .forms import LoginForm, RegisterForm, TestForm
-
+from django.views.generic import ListView
 
 
 
@@ -75,17 +77,15 @@ def passed_tests(request):
         tests = Test.objects.filter(category_id=int(category_id))
 
     results = Result.objects.filter(user=user)
-    test_results_dict = {}  # Словарь для хранения результатов тестов
+    test_results_dict = {}
     for result in results:
         test = result.test
         progress = result.progress
 
-        if test in tests:  # Проверяем, что тест принадлежит выбранной категории
-            if test not in test_results_dict:
-                test_results_dict[test] = progress
+        if test in tests:
+            test_results_dict[test] = progress
 
     authors_ids = tests.values_list('author_id', flat=True)
-    # Получаем объекты авторов
     users = User.objects.filter(id__in=authors_ids)
     context = {
         "test_results_dict": test_results_dict,
@@ -93,6 +93,7 @@ def passed_tests(request):
         "users": users,
     }
     return render(request, 'test/passed_tests.html', context)
+
 
 
 def login_view(request):
@@ -148,10 +149,14 @@ def register(request):
         return render(request, 'test/register.html', {'form': form})
 
 @login_required
+@require_POST
 def delete_question(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    question.delete()
-    return JsonResponse({'status': 'success'})
+    try:
+        question = get_object_or_404(Question, id=question_id)
+        question.delete()
+        return JsonResponse({'status': 'success'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
 
 
 @login_required
@@ -162,7 +167,6 @@ def create_test(request):
             test = test_form.save(commit=False)
             test.author = request.user
             test.save()
-
 
             # Получаем данные для вопросов и ответов из POST запроса
             for i in range(1, 51):  # Максимум 50 вопросов
@@ -203,7 +207,6 @@ def edit_test(request, id):
             test.author = request.user
             test.save()
 
-
             # Обновляем существующие вопросы и ответы
             for question in test.question_set.all():
                 question_name = request.POST.get(f'question_{question.id}_name')
@@ -215,7 +218,7 @@ def edit_test(request, id):
                         answer_name = request.POST.get(f'question_{question.id}_answer_{answer.id}_name')
                         if answer_name:
                             answer.name = answer_name
-                            answer.correct = request.POST.get('question_{question.id}_answer_{answer.id}_is_correct') == 'on'
+                            answer.correct = request.POST.get(f'question_{question.id}_answer_{answer.id}_is_correct') == 'on'
                             answer.save()
                         else:
                             answer.delete()
@@ -224,27 +227,32 @@ def edit_test(request, id):
 
             # Добавляем новые вопросы и ответы
             for i in range(1, 51):  # Максимум 50 вопросов
-                if not any(f'question_{question.id}_name' == f'question_{i}_name' for question in test.question_set.all()):
-                    question_name = request.POST.get(f'question_{i}_name')
-                    if question_name:
-                        question = Question.objects.create(
-                            name=question_name,
-                            test=test
-                        )
-                        for j in range(1, 7):  # Максимум 6 ответов на вопрос
-                            answer_name = request.POST.get(f'question_{i}_answer_{j}_name')
-                            if answer_name:
-                                Answer.objects.create(
-                                    name=answer_name,
-                                    correct=request.POST.get(f'question_{i}_answer_{j}_is_correct') == 'on',
-                                    question=question
-                                )
+                question_name = request.POST.get(f'question_{i}_name')
+                if question_name and not any(f'question_{question.id}_name' == f'question_{i}_name' for question in test.question_set.all()):
+                    question = Question.objects.create(
+                        name=question_name,
+                        test=test
+                    )
+                    for j in range(1, 7):  # Максимум 6 ответов на вопрос
+                        answer_name = request.POST.get(f'question_{i}_answer_{j}_name')
+                        if answer_name:
+                            Answer.objects.create(
+                                name=answer_name,
+                                correct=request.POST.get(f'question_{i}_answer_{j}_is_correct') == 'on',
+                                question=question
+                            )
 
             return redirect('/test/my_tests/')
     else:
         test_form = TestForm(instance=test)
 
-    return render(request, 'test/edit_test.html', {'test_form': test_form, 'test': test})
+    return render(request, 'test/edit_test.html', {
+        'test_form': test_form,
+        'test': test,
+        'test_name': test.name,
+        'test_category': test.category,
+    })
+
 
 
 
@@ -276,14 +284,11 @@ def passing_the_test(request, id):
         # Перенаправляем на страницу результатов
         return redirect('/test/<int:test_id>/results/', test_id=test.id)
 
-    time_for_pass= test.time_for_pass
-
     context = {
         'test': test,
         'questions': questions,
         'user_answers': user_answers,
-        'result': result,
-        'time_for_pass':time_for_pass
+        'result': result
     }
     return render(request, 'test/passing_the_test.html', context)
 
