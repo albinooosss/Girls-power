@@ -4,6 +4,24 @@
 
 {% block add_styles %}
 <style>
+    body {
+        background-color: #f8f9fa;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+    }
+
+    .container {
+        background-color: white;
+        border-radius: 2vw;
+        box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+        padding: 3vw;
+        max-width: 90%;
+        width: 90%;
+        margin: 0 auto;
+        text-align: center; /* Выравнивание текста по центру */
+    }
     .login-container {
         display: flex;
         justify-content: center;
@@ -13,12 +31,13 @@
     }
     .login-form {
         width: 100%;
-        max-width: 400px; /* Максимальная ширина формы */
-        padding: 15px;
-        background-color: #f9f9f9; /* Фон формы */
-        border-radius: 10px; /* Закругленные углы */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+        max-width: 500px;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 15px; /* Увеличили радиус закругления углов */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Увеличили тень */
     }
+
 </style>
 {% endblock %}
 

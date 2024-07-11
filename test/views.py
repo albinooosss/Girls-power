@@ -256,7 +256,6 @@ def edit_test(request, id):
 
 
 
-
 @login_required
 def passing_the_test(request, id):
     test = get_object_or_404(Test, id=id)

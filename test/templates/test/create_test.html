@@ -81,6 +81,7 @@
         }
     }
 
+
 </style>
 {% endblock %}
 
@@ -114,7 +115,7 @@
                     <div class="form-group answer">
                         <input type="text" name="question_${questionIndex}_answer_${answerIndex}_name" class="form-control" placeholder="Reply text">
                         <input type="checkbox" name="question_${questionIndex}_answer_${answerIndex}_is_correct" class="form-check-input">
-                        <label class="form-check-label">True</label>
+                        <label class="form-check-label"></label>
                     </div>`;
                 questionDiv.find('.answers').append(newAnswer);
             } else {
@@ -134,7 +135,7 @@
                             <div class="form-group answer">
                                 <input type="text" name="question_${questionIndex}_answer_1_name" class="form-control" placeholder="Reply text">
                                 <input type="checkbox" name="question_${questionIndex}_answer_1_is_correct" class="form-check-input">
-                                <label class="form-check-label">True</label>
+                                <label class="form-check-label"></label>
                             </div>
                         </div>
                         <button type="button" class="btn btn-secondary add-answer">Add an answer</button>
