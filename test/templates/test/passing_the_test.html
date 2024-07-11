@@ -19,6 +19,9 @@
         width: 90%;
         margin: 0 auto;
     }
+    .question-text {
+        font-size: 21px; /* Размер шрифта для вопросов */
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -27,7 +30,7 @@
     <form id="testForm" method="post" action="/test/{{ test.id }}/results/">
         {% csrf_token %}
         {% for question in questions %}
-            <h2>{{ question.name }}</h2>
+            <h2 class="question-text">{{ question.name }}</h2>  <!-- Применяем стиль к тексту вопроса -->
             {% for answer in question.answer_set.all %}
                 <div class="form-check">
                     <input type="checkbox"
