@@ -1,6 +1,9 @@
 {% extends 'test/base.html' %}
 {% block content %}
     <h1>{{ test.name }}</h1>
+    <div id="timer">
+        <span id="minutes">{{ time_for_pass }}</span>:<span id="seconds">00</span>
+    </div>
     <form method="post" action="/test/{{test.id}}/results/">
         {% csrf_token %}
         {% for question in questions %}
@@ -20,4 +23,34 @@
         {% endfor %}
         <button type="submit" class="btn btn-primary">Check</button>
     </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Установите время теста в секундах (например, 600 секунд = 10 минут)
+    let totalSeconds = '{{ time_for_pass }}';
+
+    // Функция для обновления таймера
+    function updateTimer() {
+        const minutes = '{{ time_for_pass }}'
+        const seconds = 0
+
+        document.getElementById('minutes').textContent = (minutes);
+        document.getElementById('seconds').textContent = ('00');
+
+        totalSeconds--;
+
+        // Проверка окончания времени
+        if (totalSeconds < 0) {
+            // Отправляем форму автоматически
+            document.querySelector('form').submit();
+        } else {
+            // Обновляем таймер через 1 секунду
+            setTimeout(updateTimer, 1000);
+        }
+    }
+
+    // Запускаем таймер
+    updateTimer();
+</script>
 {% endblock %}

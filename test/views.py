@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views import View
 from .models import Test, Result, Answer, Question, Category, Choice
 from .forms import LoginForm, RegisterForm, TestForm
-from django.views.generic import ListView
+
 
 
 
@@ -163,6 +163,7 @@ def create_test(request):
             test.author = request.user
             test.save()
 
+
             # Получаем данные для вопросов и ответов из POST запроса
             for i in range(1, 51):  # Максимум 50 вопросов
                 question_name = request.POST.get(f'question_{i}_name')
@@ -201,6 +202,7 @@ def edit_test(request, id):
             test = test_form.save(commit=False)
             test.author = request.user
             test.save()
+
 
             # Обновляем существующие вопросы и ответы
             for question in test.question_set.all():
@@ -274,11 +276,14 @@ def passing_the_test(request, id):
         # Перенаправляем на страницу результатов
         return redirect('/test/<int:test_id>/results/', test_id=test.id)
 
+    time_for_pass= test.time_for_pass
+
     context = {
         'test': test,
         'questions': questions,
         'user_answers': user_answers,
-        'result': result
+        'result': result,
+        'time_for_pass':time_for_pass
     }
     return render(request, 'test/passing_the_test.html', context)
 
