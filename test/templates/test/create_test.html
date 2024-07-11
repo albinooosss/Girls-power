@@ -130,7 +130,13 @@
                     <div class="question form-group" data-index="${questionIndex}">
                         <input type="text" name="question_${questionIndex}_name" class="form-control" placeholder="Question text">
                         <h3>Answers</h3>
-                        <div class="answers"></div>
+                        <div class="answers">
+                            <div class="form-group answer">
+                                <input type="text" name="question_${questionIndex}_answer_1_name" class="form-control" placeholder="Reply text">
+                                <input type="checkbox" name="question_${questionIndex}_answer_1_is_correct" class="form-check-input">
+                                <label class="form-check-label">True</label>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-secondary add-answer">Add an answer</button>
                     </div>`;
                 $('#questions').append(newQuestion);
@@ -149,3 +155,4 @@
     });
 </script>
 {% endblock %}
+
