@@ -1,9 +1,9 @@
 {% extends 'test/base.html' %}
 
 {% block content %}
-    <h5 class="text-200 fs--1">Результаты пользователя {{ request.user.username }}</h5>
+    <h5 class="text-200 fs--1">User Results {{ request.user.username }}</h5>
     <h5 class="text-400">{{ test }}</h5>
-    <h5 class="text-400">Правильные ответы</h5>
-    <h5 class="text-400">{{ correct_answers }} out of {{ total_questions }}</h5>
-    <h5 class="text-400">Процент правильных ответов: {{ percentage_correct }}%</h5>
+    <h5 class="text-400">Correct answers</h5>
+    <h5 class="text-400">{{ correct_answers_by_user }} out of {{ total_questions }}</h5>
+    <h5 class="text-400">Percentage of correct answers: {{ percentage_correct }}%</h5>
 {% endblock %}

@@ -48,12 +48,6 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
 
-class Result(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    progress = models.FloatField()
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-
-
 class Answer(models.Model):
     name = models.CharField(max_length=100)
     correct = models.BooleanField(default=False)
@@ -67,8 +61,19 @@ class Answer(models.Model):
         verbose_name_plural = 'Ответы'
 
 
+
+class Result(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    progress = models.IntegerField(default=-1)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+
+
+
+
+
 class Choice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
 
