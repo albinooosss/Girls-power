@@ -20,17 +20,21 @@
         max-width: 90%;
         width: 90%;
         margin: 0 auto;
+        text-align: center; /* Выравнивание текста по центру */
     }
 
     .form-group {
-        text-align: left;
+        display: inline-block;
+        text-align: center; /* Выравнивание текста внутри формы по центру */
         margin: 2vw 0;
         max-width: 90%;
-        margin: 0 auto;
+        font-size: 1rem; /* Установка общего размера текста */
     }
 
     .btn {
         margin-top: 2vw;
+        display: inline-block;
+        font-size: 1rem; /* Установка общего размера текста для кнопок */
     }
 
     .answer {
@@ -46,6 +50,7 @@
         border: 0.1vw solid #ccc;
         border-radius: 0.5vw;
         margin-top: 1vw;
+        font-size: 1rem; /* Установка общего размера текста для ввода */
     }
 
     .form-check-label {
@@ -131,7 +136,8 @@
                         <input type="text" name="question_${questionIndex}_name" class="form-control" placeholder="Question text">
                         <h3>Answers</h3>
                         <div class="answers"></div>
-                        <button type="button" class="btn btn-secondary add-answer">Add an answer</button>
+                        <button type="button" class="btn btn-secondary add-answer">
+                      Add an answer</button>
                     </div>`;
                 $('#questions').append(newQuestion);
             } else {
@@ -143,6 +149,7 @@
             const questionDiv = $(this).closest('.question');
             addAnswer(questionDiv);
         });
+
         $('.add-question').click(function () {
             addQuestion();
         });
