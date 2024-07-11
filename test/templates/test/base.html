@@ -62,9 +62,9 @@
             {% if user.is_authenticated %}
             <div class="col-4 col-md-6 d-flex justify-content-end align-items-center">
                 <div class="user-card d-flex align-items-center">
-                    <img src="{% static 'path/to/profile/photo' %}" alt="Profile photo" class="profile-photo">
+                    <img src="{% static 'test/img/avatar.png' %}" alt="Profile photo" class="profile-photo">
                     <span>{{ user.username }}</span>
-                    <a class="nav-link" href="/account/logout/">Выйти</a>
+                    <a class="nav-link" href="/account/logout/">Exit</a>
                 </div>
             </div>
         </div>
@@ -76,16 +76,16 @@
             <div class="navbar-collapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Главная</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'my_tests' %}">Мои тесты</a>
+                        <a class="nav-link" href="{% url 'my_tests' %}">My tests</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/test/passed_tests">Пройденные тесты</a>
+                        <a class="nav-link" href="/test/passed_tests">Passed tests</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#">Категории</a>
+                        <a class="nav-link dropdown-toggle" href="#">Categories</a>
                         <div class="dropdown-menu">
                             {% for category in categories %}
                                 <a class="dropdown-item" href="{% url 'category' category.id %}">{{ category.name }}</a>
@@ -93,7 +93,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_test' %}">Создать тест</a>
+                        <a class="nav-link" href="{% url 'create_test' %}">Сreate a test</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'FAQ' %}">FAQ</a>
@@ -101,8 +101,8 @@
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="{% url 'search_tests' %}" method="get">
                     {% csrf_token %}
-                    <input class="form-control mr-sm-2" type="text" name="q" placeholder="Поиск" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти</button>
+                    <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Find</button>
                 </form>
             </div>
         </div>

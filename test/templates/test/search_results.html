@@ -1,9 +1,28 @@
 {% extends 'test/base.html' %}
 
-{% block title %}Результаты поиска{% endblock %}
-
+{% block title %}Search Results{% endblock %}
+{% block add_styles %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+    }
+    .container {
+        background-color: white;
+        border-radius: 2vw;
+        box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+        padding: 3vw;
+        max-width: 90%;
+        width: 90%;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}
 {% block content %}
-<h1>Результаты поиска</h1>
+<h1>Search Results</h1>
 
 {% if tests %}
     <div class="row">
@@ -28,7 +47,7 @@
         {% endfor %}
     </div>
 {% else %}
-    <p>Ничего не найдено</p>
+    <p>Nothing was found</p>
 {% endif %}
 
 {% endblock %}
